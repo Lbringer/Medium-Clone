@@ -8,7 +8,7 @@ type LogoProps = {
 export const Logo: React.FC<LogoProps> = ({ type }) => {
   return (
     <Link
-      to={"/"}
+      to={"/blogs"}
       className={`${type} text-3xl font-light font-serif left-10 top-5`}
     >
       日記

@@ -1,10 +1,8 @@
-import { Logo } from "./Logo";
 import { Spinner } from "./Spinner";
 
 export const Loader = () => {
   return (
-    <div className="min-h-screen w-screen flex justify-center items-center">
-      <Logo type="absolute" />
+    <div className="min-h-full w-full flex justify-center items-center">
       <Spinner />;
     </div>
   );

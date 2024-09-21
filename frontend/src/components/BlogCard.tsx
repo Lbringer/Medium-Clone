@@ -23,11 +23,23 @@ const BlogCard: React.FC<BlogCardProps> = ({
       onClick={handleClick}
       className="mt-10 w-1/2 border-b pb-10 cursor-pointer"
     >
-      <div className="text-3xl mb-3">{title}</div>
-      <div className="text-sm font-serif mb-6">
-        {content.length > 300 ? content.slice(0, 300) + "..." : content}
-      </div>
-      <div className="text-xs text-stone-500">{publishedDate.slice(0, 10)}</div>
+      <div
+        className="text-3xl mb-3"
+        dangerouslySetInnerHTML={{ __html: title }}
+      ></div>
+      <div
+        className="text-sm font-serif mb-6"
+        dangerouslySetInnerHTML={{
+          __html:
+            content.length > 300 ? content.slice(0, 300) + "..." : content,
+        }}
+      ></div>
+      <div
+        className="text-xs text-stone-500"
+        dangerouslySetInnerHTML={{
+          __html: publishedDate.slice(0, 10),
+        }}
+      ></div>
     </div>
   );
 };

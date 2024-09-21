@@ -5,35 +5,25 @@ import { BROWSER_URL } from "../config";
 import { BlogCardProps } from "../components/BlogCard";
 
 export const useCheckLoggedIn = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const [loadingAuth, setLoadingAuth] = useState(true);
+  const location = useLocation();
   useEffect(() => {
-    axios
-      .get(`${BROWSER_URL}/api/v1/post/whoami`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-      .then(() => {
-        if (location.pathname != "/blogs") {
-          navigate("/blogs");
-        }
-        setLoadingAuth(false);
-      })
-      .catch(() => {
-        if (location.pathname == "/blogs") {
-          navigate("/signin");
-        }
-        setLoadingAuth(false);
-      });
+    const token = localStorage.getItem("token");
+    if (!token) {
+      if (location.pathname.startsWith("/blog")) {
+        navigate("/signin");
+      }
+    } else {
+      if (!location.pathname.startsWith("/blog")) {
+        navigate("/blogs");
+      }
+    }
   }, []);
-
-  return { loadingAuth };
 };
 
 export const useWhoami = () => {
   const [name, setName] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(`${BROWSER_URL}/api/v1/post/whoami`, {
@@ -43,6 +33,10 @@ export const useWhoami = () => {
       })
       .then((res) => {
         setName(res.data.name);
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
+        navigate("/signin");
       });
   }, []);
 
@@ -65,4 +59,30 @@ export const useGetAllBlogs = () => {
       });
   }, []);
   return { blogs, loading };
+};
+
+export const useGetBlog = (id: string | undefined) => {
+  const [blog, setBlog] = useState<BlogCardProps>({
+    content: "",
+    title: "",
+    publishedDate: "",
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get(`${BROWSER_URL}/api/v1/post/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setBlog(res.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, []);
+  return { loading, blog };
 };

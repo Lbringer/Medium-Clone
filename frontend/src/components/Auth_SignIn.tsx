@@ -8,9 +8,11 @@ import { Caption } from "./Caption";
 import { InputForm } from "./InputForm";
 import { SubmitBtn } from "./SubmitBtn";
 import { ErrorAuth } from "./ErrorAuth";
+import { Loader } from "./Loader";
 
 export const Auth_SignIn = () => {
   const navigate = useNavigate();
+  const [isLoading, setisLoading] = useState(false);
   const [data, setData] = useState<SigninInput>({
     email: "",
     password: "",
@@ -21,11 +23,14 @@ export const Auth_SignIn = () => {
   });
   const handleBtnClick = async () => {
     try {
+      setisLoading(true);
       const res = await axios.post(`${BROWSER_URL}/api/v1/user/signin`, data);
       const { jwt } = res.data;
       localStorage.setItem("token", jwt);
+      setisLoading(false);
       navigate("/blogs");
     } catch (error: any) {
+      setisLoading(false);
       setError({
         msg:
           error.response?.data.error ||
@@ -36,6 +41,9 @@ export const Auth_SignIn = () => {
       console.log(error);
     }
   };
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       {error.isVisible ? <ErrorAuth errMsg={error.msg} /> : ""}

@@ -8,9 +8,11 @@ import axios from "axios";
 import { BROWSER_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { ErrorAuth } from "./ErrorAuth";
+import { Loader } from "./Loader";
 
 export const Auth_SignUp = () => {
   const navigate = useNavigate();
+  const [isLoading, setisLoading] = useState(false);
   const [data, setData] = useState<SignupInput>({
     name: "",
     email: "",
@@ -22,11 +24,14 @@ export const Auth_SignUp = () => {
   });
   const handleBtnClick = async () => {
     try {
+      setisLoading(true);
       const res = await axios.post(`${BROWSER_URL}/api/v1/user/signup`, data);
       const { jwt } = res.data;
       localStorage.setItem("token", jwt);
       navigate("/blogs");
+      setisLoading(false);
     } catch (error: any) {
+      setisLoading(false);
       setError({
         msg:
           error.response?.data.error ||
@@ -37,6 +42,9 @@ export const Auth_SignUp = () => {
       console.log(error);
     }
   };
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       {error.isVisible ? <ErrorAuth errMsg={error.msg} /> : ""}
