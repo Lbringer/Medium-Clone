@@ -11,11 +11,11 @@ export const Caption: React.FC<AuthProps> = ({ type }) => {
         : "Dont have an account? "}
       <span className="font-medium">
         {type == "signup" ? (
-          <Link className="underline" to={"/signin"}>
+          <Link className="underline" to={"/signin"} state={location.pathname}>
             Login
           </Link>
         ) : (
-          <Link className="underline" to={"/signup"}>
+          <Link className="underline" to={"/signup"} state={location.pathname}>
             Signup
           </Link>
         )}

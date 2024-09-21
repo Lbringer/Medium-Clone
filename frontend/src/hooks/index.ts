@@ -7,6 +7,7 @@ import { BlogCardProps } from "../components/BlogCard";
 export const useCheckLoggedIn = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [loadingAuth, setLoadingAuth] = useState(true);
   useEffect(() => {
     axios
       .get(`${BROWSER_URL}/api/v1/post/whoami`, {
@@ -18,13 +19,17 @@ export const useCheckLoggedIn = () => {
         if (location.pathname != "/blogs") {
           navigate("/blogs");
         }
+        setLoadingAuth(false);
       })
       .catch(() => {
         if (location.pathname == "/blogs") {
           navigate("/signin");
         }
+        setLoadingAuth(false);
       });
   }, []);
+
+  return { loadingAuth };
 };
 
 export const useWhoami = () => {

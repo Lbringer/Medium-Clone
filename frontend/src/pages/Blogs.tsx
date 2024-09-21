@@ -5,13 +5,13 @@ import NoBlogs from "../components/NoBlogs";
 import { useCheckLoggedIn, useGetAllBlogs } from "../hooks";
 
 export const Blogs = () => {
-  useCheckLoggedIn();
+  const { loadingAuth } = useCheckLoggedIn();
   const { blogs, loading } = useGetAllBlogs();
   return (
     <div className="min-w-screen min-h-screen px-10 md:px-20">
       <Nav />
       <div className="w-full flex flex-col items-center">
-        {loading ? (
+        {loading || loadingAuth ? (
           <>
             <BlogCardSkeleton />
             <BlogCardSkeleton />

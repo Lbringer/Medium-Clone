@@ -5,7 +5,7 @@ export const Hero = () => {
         "Preserve Every Memory, One Entry at a Time—Your Journey Begins Here"
       </div>
       <div className="mt-4">ChatGPT</div>
-      <div className="text-sm text-stone-500">CEO, of fucking nothing</div>
+      <div className="text-sm text-stone-500">CEO, of nothing</div>
     </div>
   );
 };

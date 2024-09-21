@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { userRouter } from "./routes/user";
 import { postRouter } from "./routes/post";
-
+import { cors } from "hono/cors";
 const app = new Hono<{
   //To tell ts that the env var is of type string
   Bindings: {
@@ -15,6 +15,7 @@ const app = new Hono<{
     userId: string;
   };
 }>();
+app.use("*", cors());
 
 app.use("*", async (c, next) => {
   const prisma = new PrismaClient({

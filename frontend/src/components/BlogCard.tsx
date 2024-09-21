@@ -19,7 +19,10 @@ const BlogCard: React.FC<BlogCardProps> = ({
     navigate(`/blog/${id}`);
   };
   return (
-    <div onClick={handleClick} className="mt-10 w-1/2 border-b pb-10">
+    <div
+      onClick={handleClick}
+      className="mt-10 w-1/2 border-b pb-10 cursor-pointer"
+    >
       <div className="text-3xl mb-3">{title}</div>
       <div className="text-sm font-serif mb-6">
         {content.length > 300 ? content.slice(0, 300) + "..." : content}

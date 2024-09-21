@@ -18,18 +18,33 @@ export const postRouter = new Hono<{
 }>();
 
 postRouter.use("*", async (c, next) => {
-  const jwt = c.req.header("Authorization");
-  if (!jwt) {
-    c.status(401);
+  try {
+    const jwt = c.req.header("Authorization") || "";
+    const payload = await verify(jwt, c.env.JWT_SECRET);
+    c.set("userId", payload.userId as string);
+    await next();
+  } catch (error) {
+    c.status(400);
     return c.json({ error: "unauthorized" });
   }
-  const payload = await verify(jwt, c.env.JWT_SECRET);
-  if (!payload) {
-    c.status(401);
-    return c.json({ error: "unauthorized" });
+});
+
+postRouter.get("/whoami", async (c) => {
+  const userId = c.get("userId");
+  const prisma = c.get("prisma");
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      name: true,
+    },
+  });
+  if (!user) {
+    c.status(400);
+    return c.json({ error: "No such user exists" });
   }
-  c.set("userId", payload.userId as string);
-  await next();
+  return c.json(user);
 });
 
 postRouter.post("/", async (c) => {
@@ -83,7 +98,23 @@ postRouter.put("/", async (c) => {
 });
 postRouter.get("/bulk", async (c) => {
   const prisma = c.get("prisma");
-  const posts = await prisma.post.findMany({});
+  const userId = c.get("userId");
+  const posts = await prisma.post.findMany({
+    where: {
+      authorId: userId,
+    },
+    select: {
+      content: true,
+      title: true,
+      id: true,
+      publishedDate: true,
+    },
+    orderBy: [
+      {
+        publishedDate: "desc",
+      },
+    ],
+  });
   return c.json(posts);
 });
 postRouter.get("/:id", async (c) => {
@@ -96,6 +127,12 @@ postRouter.get("/:id", async (c) => {
       where: {
         id: postId,
         authorId: userId,
+      },
+      select: {
+        content: true,
+        title: true,
+        id: true,
+        publishedDate: true,
       },
     });
     return c.json(post);
