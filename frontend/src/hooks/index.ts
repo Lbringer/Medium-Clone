@@ -58,7 +58,7 @@ export const useGetAllBlogs = () => {
         setLoading(false);
       });
   }, []);
-  return { blogs, loading };
+  return { blogs, loading, setBlogs, setLoading };
 };
 
 export const useGetBlog = (id: string | undefined) => {

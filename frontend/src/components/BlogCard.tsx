@@ -24,11 +24,11 @@ const BlogCard: React.FC<BlogCardProps> = ({
       className="mt-10 w-1/2 border-b pb-10 cursor-pointer"
     >
       <div
-        className="text-3xl mb-3"
+        className="text-2xl md:text-3xl mb-3"
         dangerouslySetInnerHTML={{ __html: title }}
       ></div>
       <div
-        className="text-sm font-serif mb-6"
+        className="text-xs md:text-sm font-serif mb-6"
         dangerouslySetInnerHTML={{
           __html:
             content.length > 300 ? content.slice(0, 300) + "..." : content,
