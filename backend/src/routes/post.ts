@@ -100,6 +100,8 @@ postRouter.get("/bulk", async (c) => {
   const prisma = c.get("prisma");
   const userId = c.get("userId");
   const query = c.req.query("search");
+  const page = parseInt(c.req.query("page") || "1");
+  const skip = (page - 1) * 5;
   console.log(query);
   if (query) {
     const posts = await prisma.post.findMany({
@@ -129,6 +131,8 @@ postRouter.get("/bulk", async (c) => {
           publishedDate: "desc",
         },
       ],
+      skip,
+      take: 5,
     });
     return c.json(posts);
   }
@@ -147,6 +151,8 @@ postRouter.get("/bulk", async (c) => {
         publishedDate: "desc",
       },
     ],
+    skip,
+    take: 5,
   });
   return c.json(posts);
 });
