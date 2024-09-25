@@ -25,6 +25,7 @@ const Publish = () => {
   };
   useCheckLoggedIn();
   const handleClick = async () => {
+    console.log(newPost);
     try {
       setLoading(true);
       const res = await axios.post(`${BROWSER_URL}/api/v1/post`, newPost, {
@@ -42,7 +43,7 @@ const Publish = () => {
   return (
     <div className="min-w-screen h-screen px-10 md:px-20 flex flex-col items-center">
       <NavPublish handleClick={handleClick} />
-      <div className="w-3/4 h-4/5 overflow-scroll">
+      <div className="w-3/4 h-4/5 overflow-y-scroll overflow-x-hidden">
         {loading ? (
           <Loader />
         ) : (

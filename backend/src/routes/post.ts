@@ -99,6 +99,39 @@ postRouter.put("/", async (c) => {
 postRouter.get("/bulk", async (c) => {
   const prisma = c.get("prisma");
   const userId = c.get("userId");
+  const query = c.req.query("search");
+  console.log(query);
+  if (query) {
+    const posts = await prisma.post.findMany({
+      where: {
+        authorId: userId,
+        OR: [
+          {
+            content: {
+              contains: query,
+            },
+          },
+          {
+            title: {
+              contains: query,
+            },
+          },
+        ],
+      },
+      select: {
+        content: true,
+        title: true,
+        id: true,
+        publishedDate: true,
+      },
+      orderBy: [
+        {
+          publishedDate: "desc",
+        },
+      ],
+    });
+    return c.json(posts);
+  }
   const posts = await prisma.post.findMany({
     where: {
       authorId: userId,

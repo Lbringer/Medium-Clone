@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useCheckLoggedIn, useGetBlog } from "../hooks";
 import { NavBlog } from "../components/NavBlog";
 import { BlogSkeleton } from "../components/BlogSkeleton";
+import { replaceEmptyParagraphs } from "../utilities/index";
 
 export const Blog = () => {
   useCheckLoggedIn();
@@ -16,7 +17,9 @@ export const Blog = () => {
         <div className="h-full w-3/4">
           <div
             className="text-3xl md:text-4xl mt-10 mb-2"
-            dangerouslySetInnerHTML={{ __html: blog.title }}
+            dangerouslySetInnerHTML={{
+              __html: replaceEmptyParagraphs(blog.title),
+            }}
           ></div>
           <div
             className="text-xs md:text-sm text-stone-500 mb-5 md:mb-10"
@@ -27,7 +30,7 @@ export const Blog = () => {
           <div
             className="text-sm md:text-base"
             dangerouslySetInnerHTML={{
-              __html: blog.content,
+              __html: replaceEmptyParagraphs(blog.content),
             }}
           ></div>
         </div>

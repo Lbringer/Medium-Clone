@@ -13,7 +13,7 @@ export const EditorInput: React.FC<EditorInputProps> = ({ setContent }) => {
     editorProps: {
       attributes: {
         class:
-          "m-5 focus:outline-none m-0 mt-10 text-sm md:text-base text-stone-950 w-full h-20 ",
+          "m-5 focus:outline-none m-0 mt-10 text-sm md:text-base text-stone-950 h-20 ",
       },
     },
     onUpdate({ editor }) {
