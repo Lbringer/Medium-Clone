@@ -23,7 +23,7 @@ A web application that allows users to securely log in, create diary entries wit
 - React
 - Tailwind CSS
 
-**Backend**
+**Backend (Serverless)**
 
 - Cloudflare
 - Hono
