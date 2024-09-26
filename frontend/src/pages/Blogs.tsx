@@ -1,10 +1,10 @@
 import axios from "axios";
-import BlogCard from "../components/BlogCard";
+import BlogCard, { BlogCardProps } from "../components/BlogCard";
 import { BlogCardSkeleton } from "../components/BlogCardSkeleton";
 import Nav from "../components/Nav";
 import NoBlogs from "../components/NoBlogs";
 import { SearchBar } from "../components/SearchBar";
-import { useCheckLoggedIn, useGetAllBlogs } from "../hooks";
+import { useCheckLoggedIn } from "../hooks";
 import { BROWSER_URL } from "../config";
 import { useEffect, useRef, useState } from "react";
 import { Loader } from "../components/Loader";
@@ -24,7 +24,8 @@ export const Blogs = () => {
     setPage(1);
   };
   useCheckLoggedIn();
-  const { blogs, loading, setBlogs, setLoading } = useGetAllBlogs();
+  const [blogs, setBlogs] = useState<Array<BlogCardProps>>([]);
+  const [loading, setLoading] = useState(true);
   console.log(blogs);
 
   //Inifnite Scroll

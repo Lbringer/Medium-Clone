@@ -43,24 +43,6 @@ export const useWhoami = () => {
   return { name };
 };
 
-export const useGetAllBlogs = () => {
-  const [blogs, setBlogs] = useState<Array<BlogCardProps>>([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    axios
-      .get(`${BROWSER_URL}/api/v1/post/bulk`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        setBlogs(res.data);
-        setLoading(false);
-      });
-  }, []);
-  return { blogs, loading, setBlogs, setLoading };
-};
-
 export const useGetBlog = (id: string | undefined) => {
   const [blog, setBlog] = useState<BlogCardProps>({
     content: "",
